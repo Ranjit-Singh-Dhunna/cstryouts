@@ -25,36 +25,43 @@
         </button>
 
         <!-- Performance Dashboard (Bottom Left) -->
-        <aside class="stats-panel">
-            <h3>Performance Analysis</h3>
-
-            <div class="performance-score">
-                <div class="score-display">
-                    <span class="score-value" id="score">-</span>
-                    <span class="score-status" id="status">-</span>
-                </div>
+        <aside class="stats-panel" id="stats-panel">
+            <div class="panel-header">
+                <h3>Performance Analysis</h3>
+                <button class="panel-toggle" id="stats-toggle" aria-label="Toggle stats panel">
+                    <span class="toggle-icon">▼</span>
+                </button>
             </div>
+            <div class="panel-content" id="stats-content">
 
-            <div class="metrics-grid">
-                <div class="metric-item">
-                    <span class="metric-label">File Size</span>
-                    <span class="metric-value" id="filesize">-</span>
+                <div class="performance-score">
+                    <div class="score-display">
+                        <span class="score-value" id="score">-</span>
+                        <span class="score-status" id="status">-</span>
+                    </div>
                 </div>
-                <div class="metric-item">
-                    <span class="metric-label">Texture Memory</span>
-                    <span class="metric-value" id="texture-memory">-</span>
-                </div>
-                <div class="metric-item">
-                    <span class="metric-label">Triangles</span>
-                    <span class="metric-value" id="triangles">-</span>
-                </div>
-            </div>
 
-            <div class="optimization-tips" id="optimization-tips">
-                <h4>💡 Tips</h4>
-                <ul id="tips-list">
-                    <li>Load a model to see tips</li>
-                </ul>
+                <div class="metrics-grid">
+                    <div class="metric-item">
+                        <span class="metric-label">File Size</span>
+                        <span class="metric-value" id="filesize">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Texture Memory</span>
+                        <span class="metric-value" id="texture-memory">-</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Triangles</span>
+                        <span class="metric-value" id="triangles">-</span>
+                    </div>
+                </div>
+
+                <div class="optimization-tips" id="optimization-tips">
+                    <h4>💡 Tips</h4>
+                    <ul id="tips-list">
+                        <li>Load a model to see tips</li>
+                    </ul>
+                </div>
             </div>
         </aside>
 
@@ -70,97 +77,103 @@
         </main>
 
         <!-- Right Sidebar Controls -->
-        <aside class="controls-sidebar">
-            <!-- File Upload -->
-            <div class="control-section">
-                <h4>Upload Model</h4>
-                <label for="file-upload" class="model-btn upload-btn">
-                    <span class="btn-icon">📁</span>
-                    <span class="btn-text">Choose File</span>
-                </label>
-                <input type="file" id="file-upload" accept=".glb,.gltf" style="display: none;">
-            </div>
+        <aside class="controls-sidebar" id="controls-sidebar">
+            <button class="panel-toggle mobile-only" id="controls-toggle" aria-label="Toggle controls">
+                <span class="toggle-icon">▲</span>
+                <span class="toggle-text">Controls</span>
+            </button>
+            <div class="panel-content" id="controls-content">
+                <!-- File Upload -->
+                <div class="control-section">
+                    <h4>Upload Model</h4>
+                    <label for="file-upload" class="model-btn upload-btn">
+                        <span class="btn-icon">📁</span>
+                        <span class="btn-text">Choose File</span>
+                    </label>
+                    <input type="file" id="file-upload" accept=".glb,.gltf" style="display: none;">
+                </div>
 
-            <!-- Model Selector -->
-            <div class="control-section">
-                <h4>Preset Models</h4>
-                <div class="model-selector">
-                    <button class="model-btn active"
-                        onclick="loadModel('./3D_Models/high_poly_plague_knight.glb', this)">
-                        <span class="btn-icon">🛡️</span>
-                        <span class="btn-text">Plague Knight</span>
-                    </button>
-                    <button class="model-btn" onclick="loadModel('./3D_Models/low_poly_deer_elk.glb', this)">
-                        <span class="btn-icon">🦌</span>
-                        <span class="btn-text">Deer Elk</span>
-                    </button>
+                <!-- Model Selector -->
+                <div class="control-section">
+                    <h4>Preset Models</h4>
+                    <div class="model-selector">
+                        <button class="model-btn active"
+                            onclick="loadModel('./3D_Models/high_poly_plague_knight.glb', this)">
+                            <span class="btn-icon">🛡️</span>
+                            <span class="btn-text">Plague Knight</span>
+                        </button>
+                        <button class="model-btn" onclick="loadModel('./3D_Models/low_poly_deer_elk.glb', this)">
+                            <span class="btn-icon">🦌</span>
+                            <span class="btn-text">Deer Elk</span>
+                        </button>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Render Modes -->
-            <div class="control-section">
-                <h4>Render Mode</h4>
-                <div class="mode-buttons">
-                    <button class="mode-btn active" data-mode="pbr">
-                        <span class="mode-indicator"></span>
-                        PBR
-                    </button>
-                    <button class="mode-btn" data-mode="solid">
-                        <span class="mode-indicator"></span>
-                        Solid
-                    </button>
-                    <button class="mode-btn" data-mode="wireframe">
-                        <span class="mode-indicator"></span>
-                        Wireframe
-                    </button>
-                    <button class="mode-btn" data-mode="normals">
-                        <span class="mode-indicator"></span>
-                        Normals
-                    </button>
-                    <button class="mode-btn" data-mode="matcap">
-                        <span class="mode-indicator"></span>
-                        MatCap
-                    </button>
+                <!-- Render Modes -->
+                <div class="control-section">
+                    <h4>Render Mode</h4>
+                    <div class="mode-buttons">
+                        <button class="mode-btn active" data-mode="pbr">
+                            <span class="mode-indicator"></span>
+                            PBR
+                        </button>
+                        <button class="mode-btn" data-mode="solid">
+                            <span class="mode-indicator"></span>
+                            Solid
+                        </button>
+                        <button class="mode-btn" data-mode="wireframe">
+                            <span class="mode-indicator"></span>
+                            Wireframe
+                        </button>
+                        <button class="mode-btn" data-mode="normals">
+                            <span class="mode-indicator"></span>
+                            Normals
+                        </button>
+                        <button class="mode-btn" data-mode="matcap">
+                            <span class="mode-indicator"></span>
+                            MatCap
+                        </button>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Lighting Controls -->
-            <div class="control-section">
-                <h4>Lighting</h4>
-                <div class="slider-group">
-                    <label>Intensity: <span id="intensity-value">1.0</span></label>
-                    <input type="range" id="light-intensity" min="0" max="3" step="0.1" value="1">
+                <!-- Lighting Controls -->
+                <div class="control-section">
+                    <h4>Lighting</h4>
+                    <div class="slider-group">
+                        <label>Intensity: <span id="intensity-value">1.0</span></label>
+                        <input type="range" id="light-intensity" min="0" max="3" step="0.1" value="1">
+                    </div>
+                    <div class="slider-group">
+                        <label>Color:</label>
+                        <input type="color" id="light-color" value="#ffffff">
+                    </div>
+                    <div class="slider-group">
+                        <label>Exposure: <span id="exposure-value">1.0</span></label>
+                        <input type="range" id="exposure" min="0" max="2" step="0.1" value="1">
+                    </div>
+                    <div class="slider-group">
+                        <label>Shadow: <span id="shadow-value">1.0</span></label>
+                        <input type="range" id="shadow-intensity" min="0" max="2" step="0.1" value="1">
+                    </div>
                 </div>
-                <div class="slider-group">
-                    <label>Color:</label>
-                    <input type="color" id="light-color" value="#ffffff">
-                </div>
-                <div class="slider-group">
-                    <label>Exposure: <span id="exposure-value">1.0</span></label>
-                    <input type="range" id="exposure" min="0" max="2" step="0.1" value="1">
-                </div>
-                <div class="slider-group">
-                    <label>Shadow: <span id="shadow-value">1.0</span></label>
-                    <input type="range" id="shadow-intensity" min="0" max="2" step="0.1" value="1">
-                </div>
-            </div>
 
-            <!-- Actions -->
-            <div class="control-section">
-                <h4>Actions</h4>
-                <div class="action-buttons">
-                    <button class="feature-btn" id="reset-btn">
-                        <span class="btn-icon">🔄</span>
-                        <span class="btn-text">Reset View</span>
-                    </button>
-                    <button class="feature-btn" id="ar-toggle">
-                        <span class="btn-icon">📱</span>
-                        <span class="btn-text">AR Mode</span>
-                    </button>
-                    <button class="feature-btn" id="screenshot-btn">
-                        <span class="btn-icon">📸</span>
-                        <span class="btn-text">Screenshot</span>
-                    </button>
+                <!-- Actions -->
+                <div class="control-section">
+                    <h4>Actions</h4>
+                    <div class="action-buttons">
+                        <button class="feature-btn" id="reset-btn">
+                            <span class="btn-icon">🔄</span>
+                            <span class="btn-text">Reset View</span>
+                        </button>
+                        <button class="feature-btn" id="ar-toggle">
+                            <span class="btn-icon">📱</span>
+                            <span class="btn-text">AR Mode</span>
+                        </button>
+                        <button class="feature-btn" id="screenshot-btn">
+                            <span class="btn-icon">📸</span>
+                            <span class="btn-text">Screenshot</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </aside>

@@ -22,6 +22,22 @@ const savedTheme = localStorage.getItem('theme') || 'light';
 document.body.setAttribute('data-theme', savedTheme);
 themeIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
 
+// Panel Toggle Functionality
+const statsPanel = document.getElementById('stats-panel');
+const statsToggle = document.getElementById('stats-toggle');
+const controlsSidebar = document.getElementById('controls-sidebar');
+const controlsToggle = document.getElementById('controls-toggle');
+
+statsToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    statsPanel.classList.toggle('collapsed');
+});
+
+controlsToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    controlsSidebar.classList.toggle('collapsed');
+});
+
 // Model loading function
 function loadModel(src, btn) {
     currentModelUrl = src;
@@ -303,8 +319,24 @@ document.getElementById('light-intensity').addEventListener('input', (e) => {
 
 document.getElementById('light-color').addEventListener('input', (e) => {
     const color = e.target.value;
-    // Apply color filter to environment (simplified approach)
-    viewer.style.filter = `hue-rotate(${parseInt(color.slice(1), 16) % 360}deg)`;
+    // Convert hex to RGB
+    const r = parseInt(color.slice(1, 3), 16);
+    const g = parseInt(color.slice(3, 5), 16);
+    const b = parseInt(color.slice(5, 7), 16);
+
+    // Access the Three.js scene and update light colors
+    const scene = viewer.model;
+    if (scene) {
+        scene.traverse((node) => {
+            if (node.isLight) {
+                node.color.setRGB(r / 255, g / 255, b / 255);
+            }
+        });
+    }
+
+    // Also update the environment tint
+    const hue = (r * 0.299 + g * 0.587 + b * 0.114) / 255;
+    viewer.style.filter = `hue-rotate(${hue * 360}deg) brightness(${1 + (hue - 0.5) * 0.2})`;
 });
 
 document.getElementById('exposure').addEventListener('input', (e) => {
@@ -377,4 +409,13 @@ document.getElementById('screenshot-btn').addEventListener('click', async () => 
 });
 
 // Initialize statistics for default model
-viewer.addEventListener('load', updateStatistics, { once: true });
+viewer.addEventListener('load', () => {
+    updateStatistics();
+}, { once: false });
+
+// Trigger initial stats update after a short delay to ensure model is loaded
+setTimeout(() => {
+    if (viewer.loaded) {
+        updateStatistics();
+    }
+}, 1000);
